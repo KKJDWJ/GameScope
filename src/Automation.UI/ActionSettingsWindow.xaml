@@ -1,0 +1,121 @@
+<Window x:Class="Automation.UI.ActionSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Action 설정"
+        Width="620"
+        Height="520"
+        MinWidth="520"
+        MinHeight="420"
+        WindowStartupLocation="CenterOwner"
+        Background="#EEF2F6"
+        FontFamily="Consolas">
+    <Grid Margin="14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="180" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="Action 종류" />
+            <ComboBox x:Name="ActionTypeComboBox"
+                      Grid.Column="1"
+                      Height="30"
+                      VerticalContentAlignment="Center"
+                      SelectionChanged="ActionTypeComboBox_SelectionChanged">
+                <ComboBoxItem Content="None" />
+                <ComboBoxItem Content="MouseClick" />
+                <ComboBoxItem Content="KeyInput" />
+                <ComboBoxItem Content="MessagePopup" />
+            </ComboBox>
+            <TextBlock x:Name="DescriptionText"
+                       Grid.Column="2"
+                       Margin="12,0,0,0"
+                       VerticalAlignment="Center"
+                       FontWeight="Bold"
+                       TextWrapping="Wrap" />
+        </Grid>
+
+        <Border Grid.Row="1"
+                Background="#111827"
+                BorderBrush="#CBD5E1"
+                BorderThickness="1">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto">
+                <Canvas x:Name="PreviewCanvas"
+                        Background="#111827"
+                        MouseLeftButtonDown="PreviewCanvas_MouseLeftButtonDown">
+                    <Image x:Name="PreviewImage" IsHitTestVisible="False" />
+                    <Ellipse x:Name="PointMarker"
+                             Width="14"
+                             Height="14"
+                             Fill="#E53935"
+                             Stroke="White"
+                             StrokeThickness="2"
+                             Visibility="Collapsed"
+                             IsHitTestVisible="False" />
+                </Canvas>
+            </ScrollViewer>
+        </Border>
+
+        <Grid Grid.Row="2" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="35" />
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="클릭 좌표" />
+            <TextBox x:Name="ActionXTextBox" Grid.Column="1" Height="28" VerticalContentAlignment="Center" />
+            <TextBlock Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Y" />
+            <TextBox x:Name="ActionYTextBox" Grid.Column="3" Height="28" VerticalContentAlignment="Center" />
+            <TextBlock x:Name="PointHelpText"
+                       Grid.Column="4"
+                       Margin="10,0,0,0"
+                       VerticalAlignment="Center"
+                       Foreground="#64748B"
+                       Text="이미지를 클릭해 좌표를 선택하세요." />
+        </Grid>
+
+        <Grid x:Name="ValuePanel" Grid.Row="3" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="80" />
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="ValueLabel" VerticalAlignment="Center" FontWeight="Bold" Text="입력 내용" />
+            <TextBox x:Name="ActionValueTextBox"
+                     Grid.Column="1"
+                     Height="28"
+                     VerticalContentAlignment="Center" />
+            <TextBlock x:Name="DelayLabel"
+                       Grid.Column="2"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontWeight="Bold"
+                       Text="대기(ms)" />
+            <TextBox x:Name="DelayTextBox"
+                     Grid.Column="3"
+                     Height="28"
+                     Text="1000"
+                     VerticalContentAlignment="Center" />
+        </Grid>
+
+        <StackPanel Grid.Row="4"
+                    Margin="0,14,0,0"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Width="88" Height="30" Click="SaveButton_Click" Content="저장" />
+            <Button Width="88" Height="30" Margin="8,0,0,0" Click="CancelButton_Click" Content="취소" />
+        </StackPanel>
+    </Grid>
+</Window>
