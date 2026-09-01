@@ -73,7 +73,7 @@ namespace Automation.UI
             LoadWorkspace();
             RefreshAoiMacroNames();
             _autoSaveTimer.Start();
-            SetStatus("Ready. Add one or more target windows.");
+            SetStatus("GameScope AI ready. Add a target window or open an offline image.");
         }
 
         private void UserGuideButton_Click(object sender, RoutedEventArgs e)
@@ -147,6 +147,12 @@ namespace Automation.UI
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
             }
+        }
+
+        private void OfflineImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new OfflineImageValidationWindow { Owner = this };
+            window.ShowDialog();
         }
 
         private void MacrosPageButton_Click(object sender, RoutedEventArgs e)
