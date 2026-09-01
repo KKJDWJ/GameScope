@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:automation="clr-namespace:Automation.Core.Automation;assembly=Automation.Core"
-    Title="Automation Framework"
+    Title="GameScope AI"
     Width="1480"
     Height="780"
     MinWidth="1120"
@@ -11,6 +11,7 @@
     Background="#EEF2F6"
     FontFamily="Consolas">
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <SolidColorBrush x:Key="HeaderBrush" Color="#2C4056" />
         <SolidColorBrush x:Key="PanelBorderBrush" Color="#D9DEE6" />
         <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#FFFFFF" />
@@ -108,6 +109,20 @@
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="CornerRadius" Value="6" />
         </Style>
+
+        <Style x:Key="LegacyVisibilityStyle" TargetType="FrameworkElement">
+            <Setter Property="Visibility"
+                    Value="{Binding IsChecked, ElementName=LegacyFeaturesToggle, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </Style>
+
+        <Style x:Key="CoreWorkspaceCardStyle" TargetType="Border" BasedOn="{StaticResource CardBorderStyle}">
+            <Setter Property="Grid.ColumnSpan" Value="5" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, ElementName=LegacyFeaturesToggle}" Value="True">
+                    <Setter Property="Grid.ColumnSpan" Value="3" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -133,12 +148,12 @@
                         FontSize="18"
                         FontWeight="Bold"
                         Foreground="White"
-                        Text="Automation Framework" />
+                        Text="GameScope AI" />
                     <TextBlock
                         Margin="1,2,0,0"
                         FontSize="11"
                         Foreground="#B9C7D7"
-                        Text="Multi Target + Multi AOI Trigger Actions" />
+                        Text="Game Screen Analysis &amp; Vision Intelligence" />
                 </StackPanel>
 
                 <Border
@@ -161,37 +176,46 @@
                     Grid.Column="4"
                     VerticalAlignment="Center"
                     Orientation="Horizontal">
-                    <Border
-                        x:Name="MonitoringStatusBorder"
-                        Width="88"
-                        Height="30"
-                        Margin="0"
+                    <CheckBox
+                        x:Name="LegacyFeaturesToggle"
+                        Margin="0,0,12,0"
                         VerticalAlignment="Center"
-                        Background="#F5D3E1"
-                        BorderBrush="#C9D1DC"
-                        BorderThickness="1"
-                        CornerRadius="3">
-                        <TextBlock
-                            x:Name="MonitoringStatusText"
-                            HorizontalAlignment="Center"
+                        Foreground="White"
+                        Content="Legacy 기능 표시"
+                        IsChecked="False" />
+                    <StackPanel Orientation="Horizontal" Style="{StaticResource LegacyVisibilityStyle}">
+                        <Border
+                            x:Name="MonitoringStatusBorder"
+                            Width="88"
+                            Height="30"
+                            Margin="0"
                             VerticalAlignment="Center"
-                            FontSize="12"
-                            FontWeight="Bold"
-                            Foreground="#8B2044"
-                            Text="정지" />
-                    </Border>
-                    <Button
-                        x:Name="StartAllButton"
-                        Width="88"
-                        Click="StartAllButton_Click"
-                        Content="전체 실행"
-                        Style="{StaticResource PrimaryButtonStyle}" />
-                    <Button
-                        x:Name="StopAllButton"
-                        Width="88"
-                        Click="StopAllButton_Click"
-                        Content="전체 정지"
-                        IsEnabled="False" />
+                            Background="#F5D3E1"
+                            BorderBrush="#C9D1DC"
+                            BorderThickness="1"
+                            CornerRadius="3">
+                            <TextBlock
+                                x:Name="MonitoringStatusText"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="12"
+                                FontWeight="Bold"
+                                Foreground="#8B2044"
+                                Text="정지" />
+                        </Border>
+                        <Button
+                            x:Name="StartAllButton"
+                            Width="88"
+                            Click="StartAllButton_Click"
+                            Content="전체 실행"
+                            Style="{StaticResource PrimaryButtonStyle}" />
+                        <Button
+                            x:Name="StopAllButton"
+                            Width="88"
+                            Click="StopAllButton_Click"
+                            Content="전체 정지"
+                            IsEnabled="False" />
+                    </StackPanel>
                     <Button Click="UserGuideButton_Click" Content="User Guide" />
                 </StackPanel>
             </Grid>
@@ -221,24 +245,26 @@
                     <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Text="AOI Rules" />
+                        Text="AOI / Vision" />
                 </Border>
-                <Button
-                    Width="130"
-                    Height="42"
-                    Margin="0"
-                    BorderBrush="#CFD6E0"
-                    Click="MacrosPageButton_Click"
-                    Content="Macros" />
-                <Border
-                    Width="130"
-                    BorderBrush="#CFD6E0"
-                    BorderThickness="0,0,1,1">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Text="Monitoring" />
-                </Border>
+                <StackPanel Orientation="Horizontal" Style="{StaticResource LegacyVisibilityStyle}">
+                    <Button
+                        Width="130"
+                        Height="42"
+                        Margin="0"
+                        BorderBrush="#CFD6E0"
+                        Click="MacrosPageButton_Click"
+                        Content="Macros" />
+                    <Border
+                        Width="130"
+                        BorderBrush="#CFD6E0"
+                        BorderThickness="0,0,1,1">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="Monitoring" />
+                    </Border>
+                </StackPanel>
             </StackPanel>
         </Border>
 
@@ -302,7 +328,11 @@
                         Orientation="Horizontal">
                         <Button
                             Click="BackgroundCaptureButton_Click"
-                            Content="Background Test" />
+                            Content="Background Capture" />
+                        <Button
+                            Click="OfflineImageButton_Click"
+                            Content="Offline Image"
+                            Style="{StaticResource PrimaryButtonStyle}" />
                         <Button Click="RefreshButton_Click" Content="Refresh" />
                         <Button
                             Click="AddTargetButton_Click"
@@ -464,7 +494,7 @@
             <Border
                 Grid.Row="2"
                 Grid.ColumnSpan="3"
-                Style="{StaticResource CardBorderStyle}">
+                Style="{StaticResource CoreWorkspaceCardStyle}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="34" />
@@ -581,7 +611,7 @@
                 </Grid>
             </Border>
 
-            <Grid Grid.Row="2" Grid.Column="4">
+            <Grid Grid.Row="2" Grid.Column="4" Style="{StaticResource LegacyVisibilityStyle}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0" />
                     <RowDefinition Height="0" />
